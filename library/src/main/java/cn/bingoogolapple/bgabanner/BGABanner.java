@@ -504,6 +504,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         return mViewPager;
     }
 
+    @Override
     public void setOverScrollMode(int overScrollMode) {
         mOverScrollMode = overScrollMode;
         if (mViewPager != null) {
@@ -553,6 +554,12 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
         }
     }
 
+    private PageAdapter mPageAdapter;
+
+    private PageAdapter getPageAdapter() {
+        return mPageAdapter;
+    }
+
     private void initViewPager() {
         if (mViewPager != null && this.equals(mViewPager.getParent())) {
             this.removeView(mViewPager);
@@ -561,7 +568,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
         mViewPager = new BGAViewPager(getContext());
         mViewPager.setOffscreenPageLimit(1);
-        mViewPager.setAdapter(new PageAdapter());
+        mViewPager.setAdapter(mPageAdapter = new PageAdapter());
         mViewPager.addOnPageChangeListener(this);
         mViewPager.setOverScrollMode(mOverScrollMode);
         mViewPager.setAllowUserScrollable(mAllowUserScrollable);
@@ -901,7 +908,7 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
                 ViewCompat.setAlpha(mEnterView, 1.0f - positionOffset);
             }
             if (mSkipView != null) {
-                ViewCompat.setAlpha(mSkipView,  positionOffset);
+                ViewCompat.setAlpha(mSkipView, positionOffset);
             }
 
             if (positionOffset < 0.5f) {
@@ -936,6 +943,10 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
 
     public void setAdapter(Adapter adapter) {
         mAdapter = adapter;
+    }
+
+    public Adapter getAdapter() {
+        return mAdapter;
     }
 
     private class PageAdapter extends PagerAdapter {
